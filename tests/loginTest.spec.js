@@ -19,7 +19,7 @@ test.only("Log-in to application", async ({ page }) => {
     // Define locators
     const inpUserName = page.locator("#username");
     const inpPassword = page.locator("#password");
-    const btnSignIn = page.locator("input[value='Sign In']");
+    const btnSignIn = page.locator("#signInBtn");
     const cardTitle = page.locator(".card-title");
 
     // Wait for input fields to be visible
@@ -53,5 +53,6 @@ test.only("Log-in to application", async ({ page }) => {
 
     // Log all product titles
     const titles = await cardTitle.allTextContents();
-    console.log("All product titles:", titles);
+    const cleanedTitles = titles.map(title=>title.trim())
+    console.log("All product titles:", cleanedTitles);
 });
