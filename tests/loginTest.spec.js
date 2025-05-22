@@ -12,7 +12,7 @@ test("Invalid login error validation", async ({ page }) => {
 })
 
 
-test.only("Log-in to application", async ({ page }) => {
+test("Log-in to application", async ({ page }) => {
     // Launch the app
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
@@ -56,3 +56,23 @@ test.only("Log-in to application", async ({ page }) => {
     const cleanedTitles = titles.map(title=>title.trim())
     console.log("All product titles:", cleanedTitles);
 });
+
+
+test.only("Wait for network idle", async({page})=>{
+
+await page.goto("https://rahulshettyacademy.com/client");
+const inpUserEmail = page.locator("#userEmail")
+const inpPassword = page.locator("#userPassword");
+const btnLogin = page.locator("#login");
+const eleProductTitles = page.locator(".card-body h5 b");
+
+await inpUserEmail.fill("JafTester1@gmail.com");
+await inpPassword.fill("Pl@y1234");
+await btnLogin.click();
+
+// await expect(productTitles).toBeVisible(); There is an alternate
+
+await page.waitForLoadState("networkidle"); //Wait the API to give the complete response
+const listProductTitles = await eleProductTitles.allTextContents();
+console.log(listProductTitles);
+})

@@ -25,3 +25,27 @@ Ensure you have the following installed:
 8. await page.screenshot({ path: 'screenshot.png' }); → Captures a screenshot of the webpage.
 9. await browser.newContext({ recordVideo: { dir: 'videos/' } }); → Records a video of test execution.
 10. npx playwright show-report -> To open last HTML report run
+
+
+
+
+### Element Naming Standards by Type
+| Element Type | Suggested Prefix | Example Variable Name |
+|--------------|------------------|-----------------------|
+| Button | btn | btnLogin, btnSubmit |
+| Input/Textbox | input or txt | inputUsername, txtEmail |
+| Dropdown/Select | dropdown | dropdownCountry |
+| Checkbox | chk | chkTerms, chkSubscribe |
+| Radio Button | radio | radioGenderMale |
+| Link | lnk | lnkForgotPassword |
+| Label/Text | lbl | lblWelcomeMessage |
+| Table | tbl | tblUserList |
+| Row | row | rowFirstUser |
+| Column/Cell | col or cell | colEmail, cellStatus |
+| Modal/Popup | modal | modalConfirmation |
+| Icon | icon | iconDelete, iconEdit |
+| Image | img | imgProfilePicture |
+| Tab | tab | tabSettings, tabProfile |
+| Section/Panel | section | sectionBilling, panelInfo |
+| Tooltip | tooltip | tooltipHelp |
+| Alert/Toast | alert or toast | alertSuccess, toastError |
