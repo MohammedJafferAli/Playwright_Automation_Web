@@ -30,8 +30,6 @@ test("Verify user interfaces", async ({ page }) => {
     //Uncheck the Terms and check the state
     await checkBoxTerms.uncheck();
     expect(await checkBoxTerms.isChecked()).toBeFalsy();
-    
+
     await page.pause();
-
-
 })
