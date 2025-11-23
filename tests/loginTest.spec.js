@@ -58,7 +58,7 @@ test("Log-in to application", async ({ page }) => {
 });
 
 
-test.only("Wait for network idle", async({page})=>{
+test("Wait for network idle", async({page})=>{
 
 await page.goto("https://rahulshettyacademy.com/client");
 const inpUserEmail = page.locator("#userEmail")

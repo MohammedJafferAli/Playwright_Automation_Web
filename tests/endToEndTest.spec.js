@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-test.only("End to End Automation of e-commerce application", async ({ page }) => {
+test("End to End Automation of e-commerce application", async ({ page }) => {
 
     //Launch APplication 
     await page.goto("https://rahulshettyacademy.com/client");
@@ -40,14 +40,5 @@ test.only("End to End Automation of e-commerce application", async ({ page }) =>
 
     await btnCart.click();
     await btnCheckout.click();
-
     // page.pause();
-
-
-
-
-
-
-
-
 })
