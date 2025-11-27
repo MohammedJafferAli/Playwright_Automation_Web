@@ -1,7 +1,0 @@
-First product title: 
-	        iphone X
-	    
-Third product title: 
-	        Nokia Edge
-	    
-All product titles: [ 'iphone X', 'Samsung Note 8', 'Nokia Edge', 'Blackberry' ]

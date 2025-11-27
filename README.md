@@ -23,6 +23,7 @@
 - [🎯 Test Structure](#-test-structure)
 - [📝 Element Naming Standards](#-element-naming-standards)
 - [🔧 Configuration](#-configuration)
+- [🧹 Cleanup](#-cleanup)
 - [🚀 Running Tests](#-running-tests)
 - [📊 Reporting](#-reporting)
 - [🤝 Contributing](#-contributing)
@@ -122,6 +123,16 @@ The framework uses `playwright.config.js` for configuration:
 - 🎥 **Video Recording**: On failure
 - 📸 **Screenshots**: Automatic capture
 - 📊 **Reporting**: HTML reports
+
+---
+
+## 🧹 Cleanup
+
+### Before Running Tests
+```bash
+# Clean test artifacts
+./cleanup.sh
+```
 
 ---
 

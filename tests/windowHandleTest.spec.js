@@ -24,5 +24,5 @@ test("Window Handle Test", async ({ browser }) => {
     const userName = txtEmailMessage.split('@')[1].split(' ')[0];
     await inpUserName.fill(userName);
 
-    await page.pause();
+    //await page.pause();
 })
