@@ -5,7 +5,15 @@ export default class OrdersPage extends BasePage {
         super(page);
     }
 
+    async checkThankYouMessage() {
+        const thankYouText = await this.page.locator('h1.hero-primary').textContent();
+        return thankYouText.includes('Thankyou for the order');
+    }
+
     async getOrderId() {
-        return await this.page.textContent('.order-id');
+        const orderIdElement = await this.page.locator('label.ng-star-inserted').textContent();
+        const orderId = orderIdElement.replace(/\|/g, '').trim();
+        console.log('Order ID:', orderId);
+        return orderId;
     }
 }

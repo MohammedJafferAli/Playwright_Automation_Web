@@ -15,18 +15,20 @@ export default class PaymentPage extends BasePage {
     }
 
     async selectCountry(country) {
-        await this.page.locator('input[placeholder="Select Country"]').type(country);
+        const countryPrefix = country.toLowerCase().substring(0, 3);
+        await this.page.getByRole('textbox', { name: 'Select Country' }).type(countryPrefix);
+        await this.page.getByRole('button', { name: ` ${country}` }).first().click();
     }
 
     async placeOrder() {
-        await this.page.locator('a:has-text("Place Order")').click();
+        await this.page.getByText('Place Order').click();
     }
 
     async completePayment(paymentDetails = {}) {
-        const { cardDetails = {}, country = 'India' } = paymentDetails;
-        
-        await this.fillCreditCardDetails(cardDetails);
+        const { country = 'India' } = paymentDetails;
+        await this.waitForNetworkIdle();
         await this.selectCountry(country);
         await this.placeOrder();
+        await this.waitForNetworkIdle();
     }
 }

@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "npx playwright test",
     "test:allure": "npx playwright test --reporter=allure-playwright",
-    "allure:report": "npx allure generate allure-results --clean && npx allure open allure-report"
+    "allure:report": "npx allure generate allure-results --clean && npx allure open allure-report",
+    "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js",
+    
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@cucumber/cucumber": "^12.2.0",
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.18",
     "allure-playwright": "^3.4.2",

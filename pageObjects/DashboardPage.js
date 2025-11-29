@@ -6,19 +6,26 @@ export default class DashboardPage extends BasePage {
     }
 
     async addProductToCart(productName) {
-        const products = this.page.locator('.card-body');
-        const count = await products.count();
-        
-        for (let i = 0; i < count; i++) {
-            const name = await products.nth(i).locator('b').textContent();
-            if (name.trim() === productName) {
-                await products.nth(i).locator('text=Add To Cart').click();
-                break;
-            }
-        }
+        await this.waitForNetworkIdle();
+        await this.page.getByRole('button', { name: ' Add To Cart' }).first().click();
+        await this.dismissAlerts();
+    }
+
+    async waitForToastDisappear() {
+        // Wait for the toast message to disappear from the page
+        await this.page.waitForSelector('div[role="alert"].toast-message', {
+            state: 'hidden',
+            timeout: 5000
+        });
     }
 
     async goToCart() {
-        await this.page.click('button[routerlink="/dashboard/cart"]');
+        await this.dismissAlerts();
+        await this.page.locator('button[routerlink="/dashboard/cart"]').click();
+        await this.waitForNetworkIdle();
     }
-}
+
+    async checkDashboardUrl() {
+    const currentUrl = this.page.url();
+    return currentUrl.includes('dashboard/dash');
+}    }
