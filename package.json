@@ -8,7 +8,7 @@
     "test": "npx playwright test",
     "test:allure": "npx playwright test --reporter=allure-playwright",
     "allure:report": "npx allure generate allure-results --clean && npx allure open allure-report",
-    "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js",
+    "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js"
     
   },
   "keywords": [],

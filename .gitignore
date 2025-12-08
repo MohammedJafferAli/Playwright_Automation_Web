@@ -11,6 +11,10 @@ node_modules/
 /allure-results/
 /allure-report/
 
+# Cucumber Reports
+/cucumber-report/
+/cucumber-results/
+
 # Downloads
 /downloads/
 
