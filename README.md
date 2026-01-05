@@ -17,6 +17,7 @@
 
 ## 📋 Table of Contents
 
+- [📖 How to Use This File](#-how-to-use-this-file)
 - [✨ Features](#-features)
 - [🛠️ Prerequisites](#️-prerequisites)
 - [⚡ Quick Start](#-quick-start)
@@ -27,6 +28,27 @@
 - [🚀 Running Tests](#-running-tests)
 - [📊 Reporting](#-reporting)
 - [🤝 Contributing](#-contributing)
+
+---
+
+## 📖 How to Use This File
+
+### 🎯 For New Users
+1. **Start Here**: Read [Prerequisites](#️-prerequisites) and [Quick Start](#-quick-start)
+2. **Understand Structure**: Review [Test Structure](#-test-structure) to understand the codebase
+3. **Follow Standards**: Use [Element Naming Standards](#-element-naming-standards) for consistent code
+4. **Run Tests**: Execute your first test using [Running Tests](#-running-tests)
+
+### 🔧 For Developers
+- **Configuration**: Modify settings in [Configuration](#-configuration) section
+- **Standards**: Follow [Element Naming Standards](#-element-naming-standards) for maintainable code
+- **Cleanup**: Use [Cleanup](#-cleanup) commands before test execution
+- **Reporting**: Generate and view reports using [Reporting](#-reporting) section
+
+### 📚 Additional Resources
+- **AI Instructions**: Check `Learnings/AI_Instructions.md` for enterprise code generation
+- **OneStop Guide**: See `PLAYWRIGHT_ONESTOP.md` for comprehensive learning material
+- **Feature Files**: Review `Features/` directory for BDD test scenarios
 
 ---
 
