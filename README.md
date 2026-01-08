@@ -46,7 +46,9 @@ Before you begin, ensure you have:
 
 - **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
 - **Git** - [Download here](https://git-scm.com/)
-- **OpenAI API Key** (for AI features) - [Get one here](https://platform.openai.com/api-keys)
+- **AI Model** (choose one):
+  - **Ollama + Llama** (Local, Free) - [Download here](https://ollama.ai/)
+  - **OpenAI API Key** (Cloud, Paid) - [Get one here](https://platform.openai.com/api-keys)
 - **Code Editor** (VS Code recommended) - [Download here](https://code.visualstudio.com/)
 
 ### System Requirements
@@ -70,7 +72,26 @@ npm install
 npx playwright install
 ```
 
-### Step 2: Configure Environment Variables
+### Step 2: Configure AI Model
+
+#### Option A: Llama (Local, Free)
+
+```bash
+# Install Ollama
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# Pull Llama model
+ollama pull llama2
+
+# Start Ollama server (runs on localhost:11434)
+ollama serve
+```
+
+#### Option B: OpenAI (Cloud, Paid)
+
+Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+
+### Step 3: Configure Environment Variables
 
 Create a `.env` file in the root directory:
 
@@ -82,7 +103,14 @@ cp .env.example .env
 Edit `.env` with your configuration:
 
 ```env
-# OpenAI Configuration (Required for AI features)
+# AI Model Configuration (Choose one)
+AI_MODEL_TYPE=llama  # or 'openai'
+
+# Llama/Ollama Configuration (Local AI)
+LLAMA_MODEL_URL=http://localhost:11434
+LLAMA_MODEL_NAME=llama2
+
+# OpenAI Configuration (Cloud AI - Optional)
 OPENAI_API_KEY=your_openai_api_key_here
 OPENAI_MODEL=gpt-4
 
@@ -97,7 +125,7 @@ VIEWPORT_WIDTH=1920
 VIEWPORT_HEIGHT=1080
 ```
 
-### Step 3: Verify Installation
+### Step 4: Verify Installation
 
 ```bash
 # Run a simple test to verify setup
@@ -140,6 +168,20 @@ Playwright_Automation_Web/
 ## 🤖 AI-Powered Features
 
 This framework includes cutting-edge AI capabilities to accelerate your testing workflow:
+
+### 🦙 **AI Model Options**
+
+**Local AI (Recommended for Privacy):**
+- ✅ **Llama 2** - Free, runs locally, no API costs
+- ✅ **Privacy-focused** - Your code never leaves your machine
+- ✅ **No rate limits** - Generate unlimited tests
+- ✅ **Offline capable** - Works without internet
+
+**Cloud AI (Recommended for Performance):**
+- ✅ **GPT-4** - Most advanced AI model
+- ✅ **Faster generation** - Optimized for speed
+- ✅ **Latest features** - Access to newest capabilities
+- ❌ **API costs** - Pay per usage
 
 ### 🔍 Intelligent URL Analysis
 
@@ -541,7 +583,22 @@ await page.waitForLoadState('networkidle');
 
 #### 3. AI Features Issues
 
-**Problem**: AI generation fails
+**Problem**: Llama/Ollama connection fails
+```bash
+# Check if Ollama is running
+curl http://localhost:11434/api/version
+
+# Start Ollama server
+ollama serve
+
+# Check available models
+ollama list
+
+# Pull model if missing
+ollama pull llama2
+```
+
+**Problem**: OpenAI API issues
 ```bash
 # Check API key
 echo $OPENAI_API_KEY
@@ -552,6 +609,16 @@ cat .env | grep OPENAI
 # Test API connection
 curl -H "Authorization: Bearer $OPENAI_API_KEY" \
      https://api.openai.com/v1/models
+```
+
+**Problem**: AI model switching
+```bash
+# Switch to Llama (Local)
+echo "AI_MODEL_TYPE=llama" >> .env
+
+# Switch to OpenAI (Cloud)
+echo "AI_MODEL_TYPE=openai" >> .env
+echo "OPENAI_API_KEY=your_key_here" >> .env
 ```
 
 **Problem**: Generated code has errors
@@ -621,6 +688,11 @@ npm run test:cucumber              # Run Cucumber tests
 npm run analyze -- <url>           # Analyze URL
 npm run generate <type>             # Generate artifacts
 
+# AI Model Management
+ollama serve                        # Start Llama server
+ollama list                         # List available models
+ollama pull llama2                  # Download Llama model
+
 # Reporting
 npm run test:allure                # Generate Allure report
 npx playwright show-report         # View HTML report
@@ -646,6 +718,8 @@ Congratulations! You now have a powerful AI-enhanced Playwright automation frame
 
 ### Pro Tips:
 
+- 🦙 **Start with Llama**: Use local AI for privacy and unlimited generation
+- 🔄 **Switch Models**: Change `AI_MODEL_TYPE` in `.env` to switch between Llama and OpenAI
 - 🤖 **Use AI First**: Always try AI generation before manual coding
 - 📝 **Follow Patterns**: Stick to the generated code patterns for consistency
 - 🔄 **Iterate Quickly**: Use AI to rapidly prototype and refine tests

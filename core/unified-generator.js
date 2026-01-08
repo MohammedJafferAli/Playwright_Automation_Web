@@ -1,4 +1,5 @@
 import { ChatOpenAI } from '@langchain/openai';
+import { ChatOllama } from '@langchain/community/chat_models/ollama';
 import { PromptTemplate } from '@langchain/core/prompts';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { RunnableSequence } from '@langchain/core/runnables';
@@ -6,20 +7,28 @@ import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { AI_CONFIG, validateConfig } from './ai-config.js';
 
 export class UnifiedGenerator {
   constructor(config = {}) {
-    this.apiKey = config.apiKey || process.env.OPENAI_API_KEY;
-    this.model = config.model || 'gpt-4';
-    this.temperature = config.temperature || 0.1;
+    // Validate configuration
+    validateConfig();
     
-    if (!this.apiKey) throw new Error('OpenAI API key required');
+    this.modelType = AI_CONFIG.modelType;
     
-    this.llm = new ChatOpenAI({
-      openAIApiKey: this.apiKey,
-      modelName: this.model,
-      temperature: this.temperature
-    });
+    if (this.modelType === 'llama') {
+      this.llm = new ChatOllama({
+        baseUrl: AI_CONFIG.llama.baseUrl,
+        model: AI_CONFIG.llama.model,
+        temperature: AI_CONFIG.llama.temperature
+      });
+    } else {
+      this.llm = new ChatOpenAI({
+        openAIApiKey: AI_CONFIG.openai.apiKey,
+        modelName: AI_CONFIG.openai.model,
+        temperature: AI_CONFIG.openai.temperature
+      });
+    }
     
     this.outputParser = new StringOutputParser();
     this.initializeChains();
