@@ -8,18 +8,24 @@
     "test": "npx playwright test",
     "test:allure": "npx playwright test --reporter=allure-playwright",
     "allure:report": "npx allure generate allure-results --clean && npx allure open allure-report",
-    "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js"
-    
+    "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js",
+1    "test:smart": "npx cucumber-js Features/smart-testing.feature --require cucumber.config.js --require Features/step_definitions/**/*.js",
+    "analyze": "node core/intelligent-cli.js analyze",
+    "generate": "node core/intelligent-cli.js generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@cucumber/cucumber": "^12.2.0",
+    "@langchain/core": "^0.1.63",
+    "@langchain/openai": "^0.0.14",
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.18",
     "allure-playwright": "^3.4.2",
-    "exceljs": "^4.4.0"
+    "commander": "^12.0.0",
+    "exceljs": "^4.4.0",
+    "langchain": "^0.1.37"
   },
   "dependencies": {
     "agents": "^0.2.23",

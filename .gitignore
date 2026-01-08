@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+package-lock.json
 
 # Playwright Test Results
 /test-results/
@@ -15,6 +16,16 @@ node_modules/
 /cucumber-report/
 /cucumber-results/
 
+# AI Generated Files
+/tests/task*.spec.js
+/pageObjects/Task*Page.js
+/Features/task*.feature
+/Features/step_definitions/task*.step.js
+ai-test-report-*.json
+
+# Backup Files
+*.backup.*
+
 # Downloads
 /downloads/
 
@@ -22,6 +33,7 @@ node_modules/
 .env
 .env.local
 .env.*.local
+*.key
 
 # OS Files
 .DS_Store
@@ -37,3 +49,9 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
+
+# Temporary Files
+*.tmp
+*.temp
+/temp/
