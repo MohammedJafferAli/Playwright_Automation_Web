@@ -1,29 +1,73 @@
 {
   "name": "playwright_automation_web",
   "version": "1.0.0",
-  "description": "",
+  "description": "Modern Playwright automation framework with SOLID principles",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "test:chromium": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "test:mobile": "npx playwright test --project='Mobile Chrome'",
+    "test:parallel": "npx playwright test --workers=4",
+    "test:serial": "npx playwright test --workers=1",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test --grep @regression",
     "test:allure": "npx playwright test --reporter=allure-playwright",
     "allure:report": "npx allure generate allure-results --clean && npx allure open allure-report",
-    "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js"
-    
+    "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js",
+    "report:open": "npx playwright show-report",
+    "install:browsers": "npx playwright install",
+    "install:deps": "npx playwright install-deps",
+    "codegen": "npx playwright codegen",
+    "trace": "npx playwright show-trace",
+    "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "rm -rf test-results playwright-report allure-results allure-report",
+    "setup": "npm run install:browsers && npm run install:deps",
+    "ci": "npm run clean && npm run test",
+    "validate": "npm run lint && npm run format:check"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "e2e",
+    "javascript",
+    "solid-principles",
+    "page-object-model"
+  ],
+  "author": "Test Automation Team",
   "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "devDependencies": {
     "@cucumber/cucumber": "^12.2.0",
     "@playwright/test": "^1.52.0",
     "@types/node": "^22.15.18",
     "allure-playwright": "^3.4.2",
+    "eslint": "^8.57.0",
+    "prettier": "^3.0.0",
     "exceljs": "^4.4.0"
   },
   "dependencies": {
-    "agents": "^0.2.23",
     "dotenv": "^17.2.3",
     "playwright": "^1.56.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/playwright-automation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/playwright-automation/issues"
+  },
+  "homepage": "https://github.com/your-org/playwright-automation#readme"
 }

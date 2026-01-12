@@ -2,103 +2,174 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
+ * Playwright Configuration following SOLID principles
+ * Uses ConfigManager for centralized configuration
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+let ConfigManager;
+let browserConfig;
+let reportingConfig;
+let timeouts;
+
+try {
+  // Dynamic import with error handling
+  const configModule = await import('./utils/ConfigManager.js');
+  ConfigManager = configModule.default;
+  
+  // Validate configuration on startup
+  const configErrors = ConfigManager.validateConfig();
+  if (configErrors.length > 0) {
+    console.error('Configuration validation errors:');
+    configErrors.forEach(error => console.error(`  - ${error}`));
+    process.exit(1);
+  }
+  
+  browserConfig = ConfigManager.getBrowserConfig();
+  reportingConfig = ConfigManager.getReportingConfig();
+  timeouts = ConfigManager.getTimeout('navigation');
+  
+} catch (error) {
+  console.warn('ConfigManager not available, using fallback configuration:', error.message);
+  
+  // Fallback configuration
+  browserConfig = {
+    headless: process.env.HEADLESS !== 'false',
+    viewport: { width: 1280, height: 720 }
+  };
+  reportingConfig = {
+    screenshots: true,
+    videos: false,
+    trace: true
+  };
+  timeouts = 60000;
+}
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: './tests',
+  
+  /* Global test timeout */
+  timeout: timeouts,
+  
+  /* Expect timeout for assertions */
+  expect: {
+    timeout: ConfigManager?.getTimeout('medium') || 15000
+  },
+  
   /* Run tests in files in parallel */
   fullyParallel: true,
+  
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
+  
   /* Retry on CI only */
-  retries: 1,
+  retries: process.env.CI ? (ConfigManager?.getRetryConfig().maxAttempts || 3) : 1,
+  
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  
+  /* Reporter configuration */
+  reporter: [
+    ['html', { 
+      outputFolder: 'playwright-report',
+      open: process.env.CI ? 'never' : 'on-failure'
+    }],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'test-results/junit.xml' }]
+  ],
+  
+  /* Global test settings */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    baseURL: ConfigManager?.getUrl('base') || 'https://rahulshettyacademy.com/client/#/',
+    
+    /* Browser options */
+    headless: browserConfig.headless,
+    viewport: browserConfig.viewport,
+    
+    /* Collect trace when retrying the failed test */
+    trace: reportingConfig.trace ? 'on-first-retry' : 'off',
     
     /* Take screenshot only on failure */
-    screenshot: 'only-on-failure',
+    screenshot: reportingConfig.screenshots ? 'only-on-failure' : 'off',
+    
+    /* Record video on failure */
+    video: reportingConfig.videos ? 'retain-on-failure' : 'off',
+    
+    /* Action timeout */
+    actionTimeout: ConfigManager?.getTimeout('medium') || 15000,
+    
+    /* Navigation timeout */
+    navigationTimeout: ConfigManager?.getTimeout('navigation') || 60000,
+    
+    /* Ignore HTTPS errors */
+    ignoreHTTPSErrors: true,
   },
 
   /* Configure projects for major browsers */
   projects: [
-
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.(js|ts)/,
+    },
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        headless: true,
+        headless: browserConfig.headless,
         launchOptions: {
           args: [
             '--start-maximized',
-            '--deny-permission-prompts' // Automatically denies all permission popups
+            '--deny-permission-prompts',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor'
           ]
         }
-      }
-    }
-
-    // },
-    // {
-    //   name: 'AndroidChrome',
-    //   use: { 
-    //     ...devices['Pixel 5'], 
-    //     headless: false,
-    //     video:'retain-on-failure'
-    //   }
-    // }
-    /*,
+      },
+      dependencies: ['setup']
+    },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        headless: browserConfig.headless
+      },
+      dependencies: ['setup']
     },
-
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    }*/,
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+      use: {
+        ...devices['Desktop Safari'],
+        headless: browserConfig.headless
+      },
+      dependencies: ['setup']
+    },
+    /* Mobile testing */
+    {
+      name: 'Mobile Chrome',
+      use: {
+        ...devices['Pixel 5'],
+        headless: browserConfig.headless
+      },
+      dependencies: ['setup']
+    },
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 12'],
+        headless: browserConfig.headless
+      },
+      dependencies: ['setup']
+    }
   ],
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  /* Output directories */
+  outputDir: 'test-results/',
+  
+  /* Global setup and teardown */
+  globalSetup: './tests/global.setup.js',
+  globalTeardown: './tests/global.teardown.js',
 });
 

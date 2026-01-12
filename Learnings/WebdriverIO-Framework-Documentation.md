@@ -693,12 +693,12 @@ export async function waitForWebsiteLoaded() {
 // resources/prod-data.json
 {
     "EE_Mobile": {
-        "userType": "EE_Mobile",
-        "username": "Getbbprod11@nayantest.com",
-        "password": "EEtester16BT"
+        "userType": "",
+        "username": "",
+        "password": ""
     },
     "FF500Essentials": {
-        "broadbandpromotionname": "Full Fibre 500 Essentials"
+        "broadbandpromotionname": ""
     }
 }
 ```

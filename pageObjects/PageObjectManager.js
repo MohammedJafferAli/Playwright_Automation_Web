@@ -4,47 +4,81 @@ import CartPage from './CartPage.js';
 import OrdersPage from './OrderPage.js';
 import PaymentPage from './PaymentPage.js';
 
+/**
+ * Page Object Manager implementing Factory Pattern and Singleton Pattern
+ * Follows Single Responsibility and Open/Closed Principles
+ */
 export default class PageObjectManager {
     constructor(page) {
+        if (!page) {
+            throw new Error('Page instance is required');
+        }
         this.page = page;
-        this.loginPage = null;
-        this.dashboardPage = null;
-        this.cartPage = null;
-        this.ordersPage = null;
-        this.paymentPage = null;
+        this._pageInstances = new Map();
+    }
+
+    /**
+     * Generic factory method following Open/Closed Principle
+     * @param {string} pageType - Type of page to create
+     * @param {Function} PageClass - Page class constructor
+     * @returns {Object} Page instance
+     */
+    _createPageInstance(pageType, PageClass) {
+        if (!this._pageInstances.has(pageType)) {
+            this._pageInstances.set(pageType, new PageClass(this.page));
+        }
+        return this._pageInstances.get(pageType);
     }
 
     getLoginPage() {
-        if (!this.loginPage) {
-            this.loginPage = new LoginPage(this.page);
-        }
-        return this.loginPage;
+        return this._createPageInstance('login', LoginPage);
     }
 
     getDashboardPage() {
-        if (!this.dashboardPage) {
-            this.dashboardPage = new DashboardPage(this.page);
-        }
-        return this.dashboardPage;
+        return this._createPageInstance('dashboard', DashboardPage);
     }
 
     getCartPage() {
-        if (!this.cartPage) {
-            this.cartPage = new CartPage(this.page);
-        }
-        return this.cartPage;
+        return this._createPageInstance('cart', CartPage);
     }
 
     getOrdersPage() {
-        if (!this.ordersPage) {
-            this.ordersPage = new OrdersPage(this.page);
-        }
-        return this.ordersPage;
+        return this._createPageInstance('orders', OrdersPage);
     }
+
     getPaymentPage() {
-        if (!this.paymentPage) {
-            this.paymentPage = new PaymentPage(this.page);
-        }
-        return this.paymentPage;
+        return this._createPageInstance('payment', PaymentPage);
+    }
+
+    /**
+     * Get all available page types
+     * @returns {Array<string>} Available page types
+     */
+    getAvailablePages() {
+        return ['login', 'dashboard', 'cart', 'orders', 'payment'];
+    }
+
+    /**
+     * Clear all cached page instances
+     */
+    clearCache() {
+        this._pageInstances.clear();
+    }
+
+    /**
+     * Get page instance by type name
+     * @param {string} pageType - Type of page
+     * @returns {Object|null} Page instance or null if not found
+     */
+    getPageByType(pageType) {
+        const methodMap = {
+            'login': () => this.getLoginPage(),
+            'dashboard': () => this.getDashboardPage(),
+            'cart': () => this.getCartPage(),
+            'orders': () => this.getOrdersPage(),
+            'payment': () => this.getPaymentPage()
+        };
+        
+        return methodMap[pageType] ? methodMap[pageType]() : null;
     }
 }
