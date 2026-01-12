@@ -13,8 +13,6 @@
     "test:firefox": "npx playwright test --project=firefox",
     "test:webkit": "npx playwright test --project=webkit",
     "test:mobile": "npx playwright test --project='Mobile Chrome'",
-    "test:parallel": "npx playwright test --workers=4",
-    "test:serial": "npx playwright test --workers=1",
     "test:smoke": "npx playwright test --grep @smoke",
     "test:regression": "npx playwright test --grep @regression",
     "test:allure": "npx playwright test --reporter=allure-playwright",
@@ -22,17 +20,13 @@
     "test:cucumber": "npx cucumber-js Features/**/*.feature --require cucumber.config.js --require Features/step_definitions/**/*.js",
     "report:open": "npx playwright show-report",
     "install:browsers": "npx playwright install",
-    "install:deps": "npx playwright install-deps",
     "codegen": "npx playwright codegen",
-    "trace": "npx playwright show-trace",
-    "lint": "eslint . --ext .js,.ts",
-    "lint:fix": "eslint . --ext .js,.ts --fix",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
     "clean": "rm -rf test-results playwright-report allure-results allure-report",
-    "setup": "npm run install:browsers && npm run install:deps",
-    "ci": "npm run clean && npm run test",
-    "validate": "npm run lint && npm run format:check"
+    "setup": "npm run install:browsers",
+    "ci": "npm run clean && npm run test"
   },
   "keywords": [
     "playwright",
@@ -61,13 +55,5 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "playwright": "^1.56.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/your-org/playwright-automation.git"
-  },
-  "bugs": {
-    "url": "https://github.com/your-org/playwright-automation/issues"
-  },
-  "homepage": "https://github.com/your-org/playwright-automation#readme"
+  }
 }

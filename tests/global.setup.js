@@ -1,1 +1,98 @@
-import { chromium } from '@playwright/test';\nimport ConfigManager from '../utils/ConfigManager.js';\nimport Logger from '../utils/Logger.js';\n\n/**\n * Global setup for Playwright tests\n * Follows Single Responsibility Principle\n */\nasync function globalSetup() {\n  const logger = Logger.child({ module: 'GlobalSetup' });\n  \n  try {\n    logger.info('Starting global setup');\n    \n    // Validate configuration\n    const configErrors = ConfigManager.validateConfig();\n    if (configErrors.length > 0) {\n      logger.error('Configuration validation failed', { errors: configErrors });\n      throw new Error('Invalid configuration');\n    }\n    \n    // Create test results directory\n    const fs = await import('fs');\n    const path = await import('path');\n    \n    const testResultsDir = path.resolve('test-results');\n    if (!fs.existsSync(testResultsDir)) {\n      fs.mkdirSync(testResultsDir, { recursive: true });\n      logger.info('Created test results directory', { path: testResultsDir });\n    }\n    \n    // Verify browser installation\n    const browserConfig = ConfigManager.getBrowserConfig();\n    const browser = await chromium.launch({\n      headless: true,\n      timeout: 30000\n    });\n    \n    await browser.close();\n    logger.info('Browser verification successful');\n    \n    // Setup authentication if needed\n    await setupAuthentication();\n    \n    logger.info('Global setup completed successfully');\n    \n  } catch (error) {\n    logger.error('Global setup failed', { error: error.message });\n    throw error;\n  }\n}\n\n/**\n * Setup authentication state\n */\nasync function setupAuthentication() {\n  const logger = Logger.child({ module: 'AuthSetup' });\n  \n  try {\n    const browser = await chromium.launch({ headless: true });\n    const context = await browser.newContext();\n    const page = await context.newPage();\n    \n    // Navigate to login page\n    const loginUrl = ConfigManager.getUrl('login');\n    await page.goto(loginUrl);\n    \n    // Perform login with valid credentials\n    const validUser = ConfigManager.getTestData('validUser');\n    \n    // This is a placeholder - adjust selectors based on actual login page\n    try {\n      await page.fill('#userEmail', validUser.email);\n      await page.fill('#userPassword', validUser.password);\n      await page.click('#login');\n      \n      // Wait for successful login\n      await page.waitForURL('**/dashboard', { timeout: 10000 });\n      \n      // Save authentication state\n      await context.storageState({ path: 'test-results/auth.json' });\n      \n      logger.info('Authentication state saved successfully');\n    } catch (authError) {\n      logger.warn('Authentication setup failed, tests will run without pre-auth', { \n        error: authError.message \n      });\n    }\n    \n    await browser.close();\n    \n  } catch (error) {\n    logger.error('Authentication setup error', { error: error.message });\n    // Don't throw here as auth setup is optional\n  }\n}\n\nexport default globalSetup;
+import { chromium } from '@playwright/test';
+import ConfigManager from '../utils/ConfigManager.js';
+import Logger from '../utils/Logger.js';
+
+/**
+ * Global setup for Playwright tests
+ * Follows Single Responsibility Principle
+ */
+async function globalSetup() {
+  const logger = Logger.child({ module: 'GlobalSetup' });
+  
+  try {
+    logger.info('Starting global setup');
+    
+    // Validate configuration
+    const configErrors = ConfigManager.validateConfig();
+    if (configErrors.length > 0) {
+      logger.error('Configuration validation failed', { errors: configErrors });
+      throw new Error('Invalid configuration');
+    }
+    
+    // Create test results directory
+    const fs = await import('fs');
+    const path = await import('path');
+    
+    const testResultsDir = path.resolve('test-results');
+    if (!fs.existsSync(testResultsDir)) {
+      fs.mkdirSync(testResultsDir, { recursive: true });
+      logger.info('Created test results directory', { path: testResultsDir });
+    }
+    
+    // Verify browser installation
+    const browserConfig = ConfigManager.getBrowserConfig();
+    const browser = await chromium.launch({
+      headless: true,
+      timeout: 30000
+    });
+    
+    await browser.close();
+    logger.info('Browser verification successful');
+    
+    // Setup authentication if needed
+    await setupAuthentication();
+    
+    logger.info('Global setup completed successfully');
+    
+  } catch (error) {
+    logger.error('Global setup failed', { error: error.message });
+    throw error;
+  }
+}
+
+/**
+ * Setup authentication state
+ */
+async function setupAuthentication() {
+  const logger = Logger.child({ module: 'AuthSetup' });
+  
+  try {
+    const browser = await chromium.launch({ headless: true });
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    
+    // Navigate to login page
+    const loginUrl = ConfigManager.getUrl('login');
+    await page.goto(loginUrl);
+    
+    // Perform login with valid credentials
+    const validUser = ConfigManager.getTestData('validUser');
+    
+    // This is a placeholder - adjust selectors based on actual login page
+    try {
+      await page.fill('#userEmail', validUser.email);
+      await page.fill('#userPassword', validUser.password);
+      await page.click('#login');
+      
+      // Wait for successful login
+      await page.waitForURL('**/dashboard', { timeout: 10000 });
+      
+      // Save authentication state
+      await context.storageState({ path: 'test-results/auth.json' });
+      
+      logger.info('Authentication state saved successfully');
+    } catch (authError) {
+      logger.warn('Authentication setup failed, tests will run without pre-auth', { 
+        error: authError.message 
+      });
+    }
+    
+    await browser.close();
+    
+  } catch (error) {
+    logger.error('Authentication setup error', { error: error.message });
+    // Don't throw here as auth setup is optional
+  }
+}
+
+export default globalSetup;

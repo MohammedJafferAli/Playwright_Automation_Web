@@ -1,1 +1,55 @@
-{\n  \"semi\": true,\n  \"trailingComma\": \"none\",\n  \"singleQuote\": true,\n  \"printWidth\": 100,\n  \"tabWidth\": 2,\n  \"useTabs\": false,\n  \"bracketSpacing\": true,\n  \"bracketSameLine\": false,\n  \"arrowParens\": \"avoid\",\n  \"endOfLine\": \"lf\",\n  \"quoteProps\": \"as-needed\",\n  \"jsxSingleQuote\": true,\n  \"proseWrap\": \"preserve\",\n  \"htmlWhitespaceSensitivity\": \"css\",\n  \"embeddedLanguageFormatting\": \"auto\",\n  \"overrides\": [\n    {\n      \"files\": \"*.json\",\n      \"options\": {\n        \"printWidth\": 80,\n        \"tabWidth\": 2\n      }\n    },\n    {\n      \"files\": \"*.md\",\n      \"options\": {\n        \"printWidth\": 80,\n        \"proseWrap\": \"always\"\n      }\n    },\n    {\n      \"files\": \"*.yml\",\n      \"options\": {\n        \"tabWidth\": 2,\n        \"singleQuote\": false\n      }\n    }\n  ]\n}
+
+{
+  "semi": true,
+  "trailingComma": "none",
+  "singleQuote": true,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "avoid",
+  "endOfLine": "lf",
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": true,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+  "embeddedLanguageFormatting": "auto",
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "options": {
+        "singleQuote": true,
+        "printWidth": 100,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ["playwright.config.ts", "vitest.config.ts", "jest.config.ts"],
+      "options": {
+        "printWidth": 100
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "printWidth": 80,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "printWidth": 80,
+        "proseWrap": "always"
+      }
+    },
+    {
+      "files": ["*.yml", "*.yaml"],
+      "options": {
+        "tabWidth": 2,
+        "singleQuote": false
+      }
+    }
+  ]
+}

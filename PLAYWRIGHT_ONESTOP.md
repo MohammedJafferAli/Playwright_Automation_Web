@@ -1,394 +1,764 @@
-# 🎭 Playwright OneStop Guide - Complete Reference
+# 🎭 Playwright OneStop Guide - Enterprise Framework
 
 ## 📋 Table of Contents
 
 1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [30-Day Learning Plan](#30-day-learning-plan)
+2. [Enterprise Framework Architecture](#enterprise-framework-architecture)
+3. [SOLID Principles Implementation](#solid-principles-implementation)
 4. [Project Setup & Installation](#project-setup--installation)
-5. [TypeScript Basics](#typescript-basics)
-6. [Core Playwright Methods](#core-playwright-methods)
-7. [Advanced Playwright Features](#advanced-playwright-features)
-8. [Fixtures & Hooks](#fixtures--hooks)
-9. [Page Object Model](#page-object-model)
-10. [API Testing](#api-testing)
-11. [Cucumber + BDD Integration](#cucumber--bdd-integration)
-12. [Allure Reporting](#allure-reporting)
-13. [CI/CD Integration](#cicd-integration)
-14. [Docker Integration](#docker-integration)
-15. [AI in Test Automation](#ai-in-test-automation)
-16. [Best Practices](#best-practices)
-17. [Framework Architecture](#framework-architecture)
-18. [Debugging & Troubleshooting](#debugging--troubleshooting)
-19. [Interview Preparation](#interview-preparation)
-20. [Appendix](#appendix)
+5. [Configuration Management](#configuration-management)
+6. [Page Object Model with Factory Pattern](#page-object-model-with-factory-pattern)
+7. [Test Data Management](#test-data-management)
+8. [Logging & Monitoring](#logging--monitoring)
+9. [Security Best Practices](#security-best-practices)
+10. [Performance Optimization](#performance-optimization)
+11. [Error Handling & Resilience](#error-handling--resilience)
+12. [CI/CD Integration](#cicd-integration)
+13. [Code Quality & Standards](#code-quality--standards)
+14. [Best Practices](#best-practices)
 
 ---
 
 ## 🎯 Introduction
 
-Modern QA automation requires more than writing simple scripts. Companies expect SDET Leads to design scalable frameworks, integrate CI/CD, implement BDD, and leverage AI for intelligent testing.
+This framework demonstrates enterprise-grade test automation following SOLID principles, security best practices, and performance optimization. Built with Playwright and JavaScript ES6 modules.
 
-### Why Playwright + TypeScript?
+### ✅ Framework Features
 
-- ✅ **Cross-browser testing** - Chromium, Firefox, WebKit
-- ✅ **Built-in parallel execution** - Faster test runs
-- ✅ **Auto-wait mechanism** - No manual waits needed
-- ✅ **API testing support** - Test backend and frontend
-- ✅ **TypeScript type safety** - Robust and maintainable code
-- ✅ **Tracing & debugging** - Built-in developer tools
-- ✅ **Mobile emulation** - Test responsive designs
+- **SOLID Architecture** - Maintainable, extensible design
+- **Zero Security Vulnerabilities** - No hardcoded credentials, SSRF protection
+- **Performance Optimized** - Efficient element handling, smart caching
+- **Configuration Driven** - Centralized settings management
+- **Comprehensive Logging** - Structured logging with multiple transports
+- **Flexible Test Data** - Multiple data sources with fallback strategies
+- **Error Resilience** - Robust error handling and retry mechanisms
 
 ---
 
-## 🛠️ Prerequisites
+## 🏗️ Enterprise Framework Architecture
 
-### Required Software
-
-| Tool | Version | Download Link |
-|------|---------|---------------|
-| **Node.js** | v18+ LTS | [nodejs.org](https://nodejs.org/) |
-| **npm/yarn** | Latest | Comes with Node.js |
-| **Git** | Latest | [git-scm.com](https://git-scm.com/) |
-| **VS Code** | Latest | [code.visualstudio.com](https://code.visualstudio.com/) |
-
-### TypeScript Basics to Know
-
-```typescript
-// Types
-let name: string = "John";
-let age: number = 30;
-let isActive: boolean = true;
-
-// Interfaces
-interface User {
-  email: string;
-  password: string;
-}
-
-// Classes
-class LoginPage {
-  constructor(private page: Page) {}
-  
-  async login(user: User): Promise<void> {
-    await this.page.fill('#email', user.email);
-    await this.page.fill('#password', user.password);
-  }
-}
-
-// Inheritance
-class BasePage {
-  constructor(protected page: Page) {}
-  
-  async navigate(url: string): Promise<void> {
-    await this.page.goto(url);
-  }
-}
+```
+Playwright_Automation_Web/
+├── utils/                    # Core utilities
+│   ├── ConfigManager.js     # Centralized configuration
+│   ├── Logger.js           # Structured logging
+│   └── TestDataManager.js  # Test data handling
+├── pageObjects/             # Page Object Model
+│   ├── BasePage.js         # Base page with common methods
+│   ├── PageObjectManager.js # Factory pattern implementation
+│   └── LoginPage.js        # Specific page implementations
+├── tests/                   # Test files
+│   ├── global.setup.js     # Global test setup
+│   ├── global.teardown.js  # Global test cleanup
+│   └── *.spec.js          # Test specifications
+├── test-data/              # Test data files
+│   └── users.json         # User credentials and data
+├── Features/               # BDD scenarios
+│   └── step_definitions/   # Cucumber step definitions
+└── playwright.config.js    # Playwright configuration
 ```
 
 ---
 
-## 📅 30-Day Learning Plan
+## 🔧 SOLID Principles Implementation
 
-### Week 1: TypeScript Basics + Playwright Setup
-- **Day 1-2**: TypeScript fundamentals (types, interfaces, classes)
-- **Day 3-4**: Playwright installation and first test
-- **Day 5-6**: Locators and element interactions
-- **Day 7**: Practice exercises and mini-project
+### Single Responsibility Principle (SRP)
+```javascript
+// ✅ Each class has one responsibility
+class ConfigManager {        // Only handles configuration
+class Logger {              // Only handles logging
+class TestDataManager {     // Only handles test data
+class PageObjectManager {   // Only manages page objects
+```
 
-### Week 2: Advanced Playwright Features
-- **Day 8-9**: Fixtures, hooks, and test organization
-- **Day 10-11**: Page Object Model implementation
-- **Day 12-13**: API testing with Playwright
-- **Day 14**: UI Mode, HAR replay, and tracing
+### Open/Closed Principle (OCP)
+```javascript
+// ✅ Extensible without modification
+class DataSource {          // Abstract base for data sources
+class JsonDataSource extends DataSource {}
+class EnvironmentDataSource extends DataSource {}
+```
 
-### Week 3: Cucumber + BDD Integration
-- **Day 15-16**: Cucumber setup and Gherkin syntax
-- **Day 17-18**: Step definitions and scenario outlines
-- **Day 19-20**: Integrating Cucumber with Playwright
-- **Day 21**: BDD best practices and patterns
+### Liskov Substitution Principle (LSP)
+```javascript
+// ✅ Derived classes are substitutable
+class BasePage {}
+class LoginPage extends BasePage {}  // Can replace BasePage
+```
 
-### Week 4: CI/CD, Reporting, AI & Interview Prep
-- **Day 22-23**: GitLab CI/CD and Docker integration
-- **Day 24-25**: Allure reporting setup
-- **Day 26-27**: AI integration with OpenAI API
-- **Day 28-29**: Framework best practices and scalability
-- **Day 30**: Interview preparation and mock interviews
+### Interface Segregation Principle (ISP)
+```javascript
+// ✅ Focused, cohesive interfaces
+class LogTransport {        // Specific logging interface
+class DataSource {          // Specific data interface
+```
+
+### Dependency Inversion Principle (DIP)
+```javascript
+// ✅ Depend on abstractions, not concretions
+class PageObjectManager {
+  constructor(page) {       // Depends on page abstraction
+    this.page = page;      // Not specific implementation
+  }
+}
+```
 
 ---
 
 ## 🚀 Project Setup & Installation
 
-### Initialize Playwright Project
-
+### Quick Start
 ```bash
-# Create new project
-npm init playwright@latest
-
-# Choose options:
-# - TypeScript (recommended)
-# - tests folder
-# - GitHub Actions workflow
-# - Install browsers
-
-# Project structure created:
-# ├── tests/
-# ├── playwright.config.ts
-# ├── package.json
-# └── .github/workflows/playwright.yml
-```
-
-### Install Additional Dependencies
-
-```bash
-# Cucumber for BDD
-npm install @cucumber/cucumber --save-dev
-
-# Allure reporting
-npm install allure-playwright --save-dev
-
-# Environment variables
-npm install dotenv --save-dev
-
-# Excel/JSON data handling
-npm install exceljs --save-dev
-
-# OpenAI for AI integration
-npm install openai --save-dev
-
-# Install all browsers
+# Clone and setup
+git clone <repository-url>
+cd Playwright_Automation_Web
+npm install
 npx playwright install
 
-# Install with system dependencies
-npx playwright install --with-deps
+# Run tests
+npm test
 ```
 
-### TypeScript Configuration
+### Available Scripts
+```bash
+npm run test:headed        # Run with browser UI
+npm run test:debug         # Debug mode
+npm run test:chromium      # Chrome only
+npm run test:mobile        # Mobile testing
+npm run lint               # Code quality check
+npm run format             # Code formatting
+```
 
-```json
-// tsconfig.json
-{
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "outDir": "dist",
-    "rootDir": "src",
-    "types": ["node", "@playwright/test"]
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+---
+
+## ⚙️ Configuration Management
+
+### ConfigManager (Singleton Pattern)
+```javascript
+// utils/ConfigManager.js
+class ConfigManager {
+  getBrowserConfig() { /* browser settings */ }
+  getUrl(type) { /* environment URLs */ }
+  getTestData(userType) { /* test credentials */ }
+  getTimeout(type) { /* timeout values */ }
+}
+
+// Usage
+import ConfigManager from './utils/ConfigManager.js';
+const config = ConfigManager.getBrowserConfig();
+```
+
+### Environment Variables
+```bash
+# .env file
+HEADLESS=false
+BASE_URL=https://rahulshettyacademy.com/client/#/
+VALID_EMAIL=test@example.com
+MAX_RETRY_ATTEMPTS=3
+```
+
+---
+
+## 🏭 Page Object Model with Factory Pattern
+
+### PageObjectManager (Factory Pattern)
+```javascript
+class PageObjectManager {
+  constructor(page) {
+    this.page = page;
+    this._pageInstances = new Map();
+  }
+
+  _createPageInstance(pageType, PageClass) {
+    if (!this._pageInstances.has(pageType)) {
+      this._pageInstances.set(pageType, new PageClass(this.page));
+    }
+    return this._pageInstances.get(pageType);
+  }
+
+  getLoginPage() {
+    return this._createPageInstance('login', LoginPage);
+  }
+}
+```
+
+### BasePage (Template Method Pattern)
+```javascript
+class BasePage {
+  async navigateTo(path, options = {}) {
+    this._validateUrl(`${this.baseUrl}${path}`);
+    await this.page.goto(url, options);
+    await this.waitForPageLoad();
+  }
+
+  async safeAction(action, options = {}) {
+    // Retry mechanism with error handling
+  }
 }
 ```
 
 ---
 
-## 📘 TypeScript Basics
+## 📊 Test Data Management
 
-### Type Annotations
-
-```typescript
-// Primitive types
-let username: string = "testuser";
-let age: number = 25;
-let isLoggedIn: boolean = false;
-let data: any = "flexible type";
-
-// Arrays
-let numbers: number[] = [1, 2, 3];
-let names: Array<string> = ["John", "Jane"];
-
-// Tuples
-let user: [string, number] = ["John", 30];
-
-// Enums
-enum Environment {
-  DEV = "dev",
-  QA = "qa",
-  PROD = "prod"
-}
-
-// Union types
-let id: string | number = "123";
-
-// Type aliases
-type UserCredentials = {
-  email: string;
-  password: string;
-};
-```
-
-### Interfaces
-
-```typescript
-// Basic interface
-interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-// Optional properties
-interface User {
-  name: string;
-  email: string;
-  phone?: string; // Optional
-}
-
-// Readonly properties
-interface Config {
-  readonly baseUrl: string;
-  readonly timeout: number;
-}
-
-// Extending interfaces
-interface Admin extends User {
-  role: string;
-  permissions: string[];
-}
-
-// Function interfaces
-interface LoginFunction {
-  (email: string, password: string): Promise<void>;
-}
-```
-
-### Classes & Inheritance
-
-```typescript
-// Base class
-class BasePage {
-  constructor(protected page: Page) {}
-  
-  async navigate(url: string): Promise<void> {
-    await this.page.goto(url);
+### TestDataManager (Strategy Pattern)
+```javascript
+class TestDataManager {
+  constructor() {
+    this._dataSources = [
+      new EnvironmentDataSource(),
+      new JsonDataSource('test-data/users.json'),
+      new MemoryDataSource()
+    ];
   }
-  
-  async getTitle(): Promise<string> {
-    return await this.page.title();
-  }
-}
 
-// Inheritance
-class LoginPage extends BasePage {
-  private emailInput = '#email';
-  private passwordInput = '#password';
-  private loginButton = '#loginBtn';
-  
-  async login(email: string, password: string): Promise<void> {
-    await this.page.fill(this.emailInput, email);
-    await this.page.fill(this.passwordInput, password);
-    await this.page.click(this.loginButton);
-  }
-}
-
-// Abstract classes
-abstract class AbstractPage {
-  constructor(protected page: Page) {}
-  
-  abstract getPageUrl(): string;
-  
-  async navigateToPage(): Promise<void> {
-    await this.page.goto(this.getPageUrl());
+  async getData(key) {
+    // Try sources in order, return first found
   }
 }
 ```
 
-### Generics
-
-```typescript
-// Generic function
-function getElement<T>(selector: string): T {
-  return document.querySelector(selector) as T;
-}
-
-// Generic class
-class DataStore<T> {
-  private data: T[] = [];
-  
-  add(item: T): void {
-    this.data.push(item);
+### Data Sources
+```javascript
+// test-data/users.json
+{
+  "users": {
+    "valid": {
+      "email": "test@example.com",
+      "password": "secure123"
+    }
   }
-  
-  get(index: number): T {
-    return this.data[index];
+}
+```
+
+---
+
+## 📝 Logging & Monitoring
+
+### Logger (Strategy Pattern)
+```javascript
+class Logger {
+  constructor() {
+    this.transports = [
+      new ConsoleTransport(),
+      new FileTransport()
+    ];
+  }
+
+  info(message, meta = {}) {
+    this.log(LogLevel.INFO, message, meta);
   }
 }
 
 // Usage
-const userStore = new DataStore<User>();
-userStore.add({ name: "John", email: "john@test.com" });
+import Logger from './utils/Logger.js';
+const logger = Logger.child({ module: 'LoginTests' });
+logger.info('Test started', { testName: 'login-test' });
 ```
 
 ---
 
-## 🎯 Core Playwright Methods
+## 🔒 Security Best Practices
 
-### Element Locators (Detailed)
+### ✅ Implemented Security Measures
+
+1. **No Hardcoded Credentials**
+   ```javascript
+   // ❌ Bad
+   await page.fill('#password', 'hardcoded123');
+   
+   // ✅ Good
+   const user = await TestDataMa# 🎭 Playwright Enterprise Framework - Complete Guide
+
+<div align="center">
+
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Enterprise](https://img.shields.io/badge/Enterprise-Ready-blue?style=for-the-badge)
+![SOLID](https://img.shields.io/badge/SOLID-Principles-green?style=for-the-badge)
+
+**🚀 Enterprise-Grade Test Automation Framework**
+
+*Secure • Scalable • Maintainable • High Performance*
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [🏗️ Enterprise Architecture](#️-enterprise-architecture)
+- [🔒 Security & SOLID Principles](#-security--solid-principles)
+- [⚡ Performance Optimization](#-performance-optimization)
+- [🛡️ Error Handling & Resilience](#️-error-handling--resilience)
+- [🎯 Framework Components](#-framework-components)
+- [📝 Element Interactions](#-element-interactions)
+- [🔧 Configuration Management](#-configuration-management)
+- [📊 Logging & Monitoring](#-logging--monitoring)
+- [🚀 Best Practices](#-best-practices)
+- [🔄 CI/CD Integration](#-cicd-integration)
+
+---
+
+## 🏗️ Enterprise Architecture
+
+### Framework Structure
+```
+Playwright_Automation_Web/
+├── 📁 pageObjects/           # Page Object Model
+│   ├── BasePage.js          # Template Method Pattern
+│   ├── LoginPage.js         # Specific page implementation
+│   └── PageObjectManager.js # Factory Pattern
+├── 📁 utils/                # Utility Classes
+│   ├── ConfigManager.js     # Singleton Pattern
+│   ├── Logger.js            # Strategy Pattern
+│   └── TestDataManager.js   # Data Management
+├── 📁 tests/                # Test Implementation
+│   ├── global.setup.js      # Global initialization
+│   ├── global.teardown.js   # Global cleanup
+│   └── loginTest.spec.js    # Test specifications
+├── 📁 test-data/            # Test Data
+│   └── users.json          # User credentials
+└── 📁 config/               # Configuration Files
+    ├── playwright.config.js # Main configuration
+    └── cucumber.config.js   # BDD configuration
+```
+
+### Design Patterns Implementation
+
+1. **Factory Pattern** - PageObjectManager
+   ```javascript
+   class PageObjectManager {
+     static createPage(pageType, page) {
+       const pageClasses = {
+         login: LoginPage,
+         dashboard: DashboardPage
+       };
+       return new pageClasses[pageType](page);
+     }
+   }
+   ```
+
+2. **Singleton Pattern** - ConfigManager
+   ```javascript
+   class ConfigManager {
+     static getInstance() {
+       if (!ConfigManager.instance) {
+         ConfigManager.instance = new ConfigManager();
+       }
+       return ConfigManager.instance;
+     }
+   }
+   ```
+
+3. **Template Method Pattern** - BasePage
+   ```javascript
+   class BasePage {
+     async performAction(action) {
+       await this.beforeAction();
+       await action();
+       await this.afterAction();
+     }
+   }
+   ```
+
+---
+
+## 🔒 Security & SOLID Principles
+
+### SOLID Principles Implementation
+
+#### 1. **Single Responsibility Principle (SRP)**
+```javascript
+// ✅ Each class has one responsibility
+class ConfigManager {        // Only manages configuration
+class Logger {              // Only handles logging
+class TestDataManager {     // Only manages test data
+```
+
+#### 2. **Open/Closed Principle (OCP)**
+```javascript
+// ✅ Open for extension, closed for modification
+class BasePage {
+  async performValidation() {
+    // Base validation logic
+  }
+}
+
+class LoginPage extends BasePage {
+  async performValidation() {
+    await super.performValidation();
+    // Additional login-specific validation
+  }
+}
+```
+
+#### 3. **Liskov Substitution Principle (LSP)**
+```javascript
+// ✅ Derived classes are substitutable for base classes
+const pages = [
+  new LoginPage(page),
+  new DashboardPage(page)
+];
+
+pages.forEach(pageObj => {
+  pageObj.performAction(); // Works for all page types
+});
+```
+
+#### 4. **Interface Segregation Principle (ISP)**
+```javascript
+// ✅ Specific interfaces for different capabilities
+class Clickable {
+  async click() { /* implementation */ }
+}
+
+class Fillable {
+  async fill(text) { /* implementation */ }
+}
+```
+
+#### 5. **Dependency Inversion Principle (DIP)**
+```javascript
+// ✅ Depend on abstractions, not concretions
+class LoginPage {
+  constructor(page, logger = Logger.getInstance()) {
+    this.page = page;
+    this.logger = logger; // Injected dependency
+  }
+}
+```
+
+### Security Measures
+
+1. **Credential Management**
+   ```javascript
+   // ✅ Secure credential handling
+   const user = TestDataManager.getUser('valid');
+   await page.fill('#password', user.password);
+   ```
+
+2. **SSRF Protection**
+   ```javascript
+   _validateUrl(url) {
+     const parsedUrl = new URL(url);
+     const hostname = parsedUrl.hostname;
+     
+     // Block private IP ranges
+     const privateRanges = [
+       /^10\./,
+       /^172\.(1[6-9]|2[0-9]|3[01])\./,
+       /^192\.168\./,
+       /^127\./,
+       /^localhost$/i
+     ];
+     
+     if (privateRanges.some(range => range.test(hostname))) {
+       throw new Error('Access to private networks denied');
+     }
+   }
+   ```
+
+3. **Input Validation**
+   ```javascript
+   _validateCredentials(username, password) {
+     if (!username || typeof username !== 'string') {
+       throw new Error('Invalid username format');
+     }
+     if (!password || password.length < 8) {
+       throw new Error('Password must be at least 8 characters');
+     }
+   }
+   ```
+
+---
+
+## ⚡ Performance Optimization
+
+### Performance Improvements
+
+1. **Efficient Element Handling**
+   ```javascript
+   // ❌ Slow - counts all elements
+   const count = await page.locator('.alert').count();
+   if (count > 0) { /* handle */ }
+   
+   // ✅ Fast - checks visibility directly
+   const isVisible = await page.locator('.alert').first().isVisible();
+   if (isVisible) { /* handle */ }
+   ```
+
+2. **Smart Caching**
+   ```javascript
+   class PageObjectManager {
+     constructor() {
+       this._pageInstances = new Map();
+     }
+     
+     _createPageInstance(pageType, PageClass) {
+       if (!this._pageInstances.has(pageType)) {
+         this._pageInstances.set(pageType, new PageClass(this.page));
+       }
+       return this._pageInstances.get(pageType);
+     }
+   }
+   ```
+
+3. **Optional Validation**
+   ```javascript
+   async fill(selector, text, options = {}) {
+     const { validate = false, timeout = 30000 } = options;
+     
+     await this.page.fill(selector, text, { timeout });
+     
+     // Only validate when explicitly requested
+     if (validate) {
+       await this._validateInput(selector, text);
+     }
+   }
+   ```
+
+4. **Resource Management**
+   ```javascript
+   class ResourceManager {
+     constructor() {
+       this.resources = new Map();
+     }
+     
+     async cleanup() {
+       for (const [key, resource] of this.resources) {
+         await resource.dispose();
+       }
+       this.resources.clear();
+     }
+   }
+   ```
+
+---
+
+## 🛡️ Error Handling & Resilience
+
+### Retry Mechanisms
+```javascript
+class BasePage {
+  async safeAction(action, options = {}) {
+    const { retries = 3, delay = 1000 } = options;
+    
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        await action();
+        return;
+      } catch (error) {
+        if (attempt === retries - 1) {
+          this.logger.error('Action failed after retries', {
+            error: error.message,
+            attempts: retries
+          });
+          throw error;
+        }
+        
+        await this.page.waitForTimeout(delay * (attempt + 1));
+        this.logger.warn(`Retry attempt ${attempt + 1}`, {
+          error: error.message
+        });
+      }
+    }
+  }
+}
+```
+
+### Global Error Handling
+```javascript
+// tests/global.setup.js
+export default async function globalSetup() {
+  const logger = Logger.getInstance();
+  
+  try {
+    logger.info('Starting global setup');
+    
+    // Initialize configuration
+    await ConfigManager.initialize();
+    
+    // Setup authentication state
+    await setupAuthState();
+    
+    logger.info('Global setup completed successfully');
+  } catch (error) {
+    logger.error('Global setup failed', {
+      error: error.message,
+      stack: error.stack
+    });
+    throw error;
+  }
+}
+```
+
+### Circuit Breaker Pattern
+```javascript
+class CircuitBreaker {
+  constructor(threshold = 5, timeout = 60000) {
+    this.failureCount = 0;
+    this.threshold = threshold;
+    this.timeout = timeout;
+    this.state = 'CLOSED'; // CLOSED, OPEN, HALF_OPEN
+  }
+  
+  async execute(operation) {
+    if (this.state === 'OPEN') {
+      throw new Error('Circuit breaker is OPEN');
+    }
+    
+    try {
+      const result = await operation();
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+}
+```
+
+---
+
+## 🎯 Framework Components
+
+### ConfigManager (Singleton)
+```javascript
+class ConfigManager {
+  static getInstance() {
+    if (!ConfigManager.instance) {
+      ConfigManager.instance = new ConfigManager();
+    }
+    return ConfigManager.instance;
+  }
+  
+  getTimeout(type) {
+    const timeouts = {
+      short: 5000,
+      medium: 15000,
+      long: 30000
+    };
+    return timeouts[type] || timeouts.medium;
+  }
+  
+  getBrowserConfig(browserName) {
+    return this.config.projects.find(p => p.name === browserName);
+  }
+}
+```
+
+### Logger (Strategy Pattern)
+```javascript
+class Logger {
+  constructor() {
+    this.transports = [
+      new ConsoleTransport(),
+      new FileTransport()
+    ];
+  }
+  
+  info(message, metadata = {}) {
+    this._log('info', message, metadata);
+  }
+  
+  error(message, metadata = {}) {
+    this._log('error', message, metadata);
+  }
+  
+  _log(level, message, metadata) {
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      level,
+      message,
+      ...metadata
+    };
+    
+    this.transports.forEach(transport => {
+      transport.log(logEntry);
+    });
+  }
+}
+```
+
+### TestDataManager
+```javascript
+class TestDataManager {
+  constructor() {
+    this.dataSources = new Map();
+    this.cache = new Map();
+  }
+  
+  getUser(userType) {
+    const cacheKey = `user_${userType}`;
+    
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+    
+    const userData = this._loadUserData(userType);
+    this.cache.set(cacheKey, userData);
+    return userData;
+  }
+  
+  _loadUserData(userType) {
+    // Load from environment or JSON file
+    return process.env[`USER_${userType.toUpperCase()}`] || 
+           this.dataSources.get('users')[userType];
+  }
+}
+```
+
+---
+
+## 📝 Element Interactions
+
+### Locator Strategies
 
 ```javascript
-// ===== RECOMMENDED LOCATORS =====
+// ===== MODERN LOCATORS (RECOMMENDED) =====
 
-// 1. By Role (Most Accessible)
+// Role-based (Accessibility)
 await page.getByRole('button', { name: 'Submit' });
 await page.getByRole('textbox', { name: 'Email' });
-await page.getByRole('checkbox', { name: 'Accept terms' });
-await page.getByRole('link', { name: 'Sign up' });
-await page.getByRole('heading', { name: 'Welcome' });
+await page.getByRole('checkbox', { name: 'Subscribe' });
 
-// 2. By Label (Form elements)
-await page.getByLabel('Email address');
+// Label-based
+await page.getByLabel('Username');
 await page.getByLabel('Password');
 
-// 3. By Placeholder
+// Placeholder-based
 await page.getByPlaceholder('Enter your email');
-await page.getByPlaceholder('Search...');
 
-// 4. By Text (Exact and partial)
-await page.getByText('Submit');
-await page.getByText('Submit', { exact: true });
-await page.getByText(/submit/i); // Case insensitive
+// Text content
+await page.getByText('Welcome back');
+await page.getByText('Sign in', { exact: true });
 
-// 5. By Test ID (Best for testing)
-await page.getByTestId('submit-button');
-await page.getByTestId('user-profile');
+// Test ID (Recommended for testing)
+await page.getByTestId('login-button');
+await page.getByTestId('user-menu');
 
 // ===== CSS SELECTORS =====
 
-// By ID
+// ID selector
 await page.locator('#username');
-await page.locator('#submit-btn');
 
-// By Class
+// Class selector
 await page.locator('.btn-primary');
-await page.locator('.error-message');
 
-// By Attribute
-await page.locator('[data-test="login-btn"]');
-await page.locator('[type="email"]');
-await page.locator('[name="username"]');
+// Attribute selector
+await page.locator('[data-testid="submit"]');
 
-// Combined selectors
-await page.locator('input[type="email"]');
-await page.locator('button.btn-primary');
-await page.locator('div.container > button');
-
-// Nth element
-await page.locator('.item').nth(0); // First
-await page.locator('.item').nth(2); // Third
-await page.locator('.item').first();
-await page.locator('.item').last();
+// Pseudo-selectors
+await page.locator('.item:first-child');
+await page.locator('.item:last-child');
 
 // ===== XPATH SELECTORS =====
 
 await page.locator('//button[@id="submit"]');
 await page.locator('//input[@type="email"]');
 await page.locator('//div[contains(@class, "error")]');
-await page.locator('//button[text()="Submit"]');
 
 // ===== CHAINING & FILTERING =====
 
@@ -398,119 +768,67 @@ await page.locator('.item').filter({ hasText: 'Active' });
 // Filter by another locator
 await page.locator('.card').filter({ has: page.locator('.badge') });
 
-// Get by (chaining)
+// Chaining
 await page.locator('.container').getByRole('button', { name: 'Submit' });
-
-// ===== HANDLING MULTIPLE ELEMENTS =====
-
-// Count elements
-const count = await page.locator('.item').count();
-
-// Loop through elements
-const items = await page.locator('.item').all();
-for (const item of items) {
-  console.log(await item.textContent());
-}
-
-// Get all text contents
-const texts = await page.locator('.item').allTextContents();
 ```
 
-### Text Input Elements (Detailed)
+### Input Interactions
 
 ```javascript
-// ===== BASIC INPUT =====
+// ===== TEXT INPUT =====
 
 // Fill (clears then types)
 await page.fill('#username', 'testuser');
-await page.getByLabel('Email').fill('test@example.com');
 
-// Type (types character by character)
-await page.type('#password', 'secret123');
-await page.type('#search', 'playwright', { delay: 100 }); // Slow typing
+// Type character by character
+await page.type('#search', 'playwright', { delay: 100 });
 
 // Clear input
 await page.fill('#username', '');
-await page.locator('#username').clear();
 
 // ===== KEYBOARD INTERACTIONS =====
 
-// Press single key
+// Single key press
 await page.press('#search', 'Enter');
-await page.press('#input', 'Tab');
-await page.press('#input', 'Escape');
 
 // Keyboard shortcuts
-await page.keyboard.press('Control+A'); // Select all
-await page.keyboard.press('Control+C'); // Copy
-await page.keyboard.press('Control+V'); // Paste
-await page.keyboard.press('Meta+A'); // Mac Command+A
+await page.keyboard.press('Control+A');
+await page.keyboard.press('Control+V');
 
-// Type with keyboard
-await page.keyboard.type('Hello World');
+// ===== FILE UPLOAD =====
 
-// Press multiple keys
-await page.keyboard.down('Shift');
-await page.keyboard.press('A');
-await page.keyboard.up('Shift');
-
-// ===== SPECIAL SCENARIOS =====
-
-// Upload file to input
+// Single file
 await page.setInputFiles('#fileUpload', 'path/to/file.pdf');
 
 // Multiple files
-await page.setInputFiles('#multiUpload', [
-  'file1.pdf',
-  'file2.jpg'
-]);
-
-// Remove uploaded files
-await page.setInputFiles('#fileUpload', []);
-
-// Handle contenteditable
-await page.locator('[contenteditable]').fill('Editable content');
-
-// Handle input with validation
-await page.fill('#email', 'invalid-email');
-await page.blur('#email'); // Trigger validation
-await expect(page.locator('.error')).toBeVisible();
+await page.setInputFiles('#multiUpload', ['file1.pdf', 'file2.jpg']);
 ```
 
-### Button Interactions (Detailed)
+### Click Interactions
 
 ```javascript
 // ===== CLICK VARIATIONS =====
 
 // Basic click
 await page.click('#submitBtn');
-await page.getByRole('button', { name: 'Submit' }).click();
 
 // Click with options
 await page.click('#btn', {
-  button: 'left',    // 'left' | 'right' | 'middle'
-  clickCount: 1,     // Number of clicks
-  delay: 100,        // Delay between mousedown and mouseup
-  force: false,      // Skip actionability checks
-  modifiers: ['Control'], // Modifier keys
-  position: { x: 10, y: 10 }, // Click position
-  timeout: 30000     // Custom timeout
+  button: 'left',
+  clickCount: 1,
+  delay: 100,
+  force: false,
+  modifiers: ['Control'],
+  timeout: 30000
 });
 
 // Double click
 await page.dblclick('#element');
 
-// Right click (context menu)
+// Right click
 await page.click('#element', { button: 'right' });
 
-// Force click (bypass checks)
-await page.click('#hiddenBtn', { force: true });
-
-// Click with modifier keys
-await page.click('#link', { modifiers: ['Control'] }); // Ctrl+Click
-await page.click('#link', { modifiers: ['Meta'] });    // Cmd+Click (Mac)
-
-// ===== CLICK SCENARIOS =====
+// ===== ADVANCED SCENARIOS =====
 
 // Click and wait for navigation
 await Promise.all([
@@ -518,51 +836,346 @@ await Promise.all([
   page.click('#submitBtn')
 ]);
 
-// Click and wait for response
+// Click and wait for API response
 await Promise.all([
   page.waitForResponse('**/api/submit'),
   page.click('#submitBtn')
 ]);
+```
 
-// Click if visible
-if (await page.locator('#closeBtn').isVisible()) {
-  await page.click('#closeBtn');
-}
+---
 
-// Click with retry
-for (let i = 0; i < 3; i++) {
-  try {
-    await page.click('#dynamicBtn', { timeout: 5000 });
-    break;
-  } catch (e) {
-    if (i === 2) throw e;
+## 🔧 Configuration Management
+
+### Playwright Configuration
+```javascript
+// playwright.config.js
+const { ConfigManager } = require('./utils/ConfigManager');
+
+module.exports = {
+  testDir: './tests',
+  timeout: ConfigManager.getTimeout('long'),
+  retries: process.env.CI ? 2 : 0,
+  
+  use: {
+    baseURL: ConfigManager.getBaseURL(),
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure'
+  },
+  
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] }
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] }
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] }
+    }
+  ]
+};
+```
+
+### Environment Configuration
+```javascript
+// .env
+BASE_URL=https://example.com
+TEST_USER_EMAIL=test@example.com
+TEST_USER_PASSWORD=securePassword123
+LOG_LEVEL=info
+TIMEOUT_SHORT=5000
+TIMEOUT_MEDIUM=15000
+TIMEOUT_LONG=30000
+```
+
+---
+
+## 📊 Logging & Monitoring
+
+### Structured Logging
+```javascript
+class Logger {
+  info(message, metadata = {}) {
+    this._log('info', message, {
+      timestamp: new Date().toISOString(),
+      testId: this.getCurrentTestId(),
+      ...metadata
+    });
+  }
+  
+  createChild(context) {
+    return new Logger({
+      ...this.context,
+      ...context
+    });
   }
 }
 
-// ===== HOVER & FOCUS =====
+// Usage in tests
+const logger = Logger.getInstance().createChild({
+  testSuite: 'LoginTests',
+  browser: 'chromium'
+});
 
-// Hover over element
-await page.hover('#menuItem');
-await page.locator('#dropdown').hover();
-
-// Focus element
-await page.focus('#input');
-
-// Blur element
-await page.blur('#input');
+logger.info('Starting login test', {
+  username: 'testuser',
+  duration: 1500
+});
 ```
 
-### Checkbox & Radio Buttons (Detailed)
-
+### Performance Monitoring
 ```javascript
-// ===== CHECKBOX OPERATIONS =====
+class PerformanceMonitor {
+  static async measureAction(actionName, action) {
+    const startTime = Date.now();
+    
+    try {
+      const result = await action();
+      const duration = Date.now() - startTime;
+      
+      Logger.getInstance().info('Action completed', {
+        action: actionName,
+        duration,
+        status: 'success'
+      });
+      
+      return result;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      
+      Logger.getInstance().error('Action failed', {
+        action: actionName,
+        duration,
+        error: error.message,
+        status: 'failed'
+      });
+      
+      throw error;
+    }
+  }
+}
+```
 
-// Check checkbox
-await page.check('#agreeTerms');
-await page.getByRole('checkbox', { name: 'Subscribe' }).check();
+---
 
-// Uncheck checkbox
-await page.uncheck('#newsletter');
+## 🚀 Best Practices
+
+### ✅ Framework Standards
+
+1. **Use Configuration Management**
+   ```javascript
+   const timeout = ConfigManager.getTimeout('medium');
+   const baseUrl = ConfigManager.getBaseURL();
+   ```
+
+2. **Implement Proper Logging**
+   ```javascript
+   const logger = Logger.getInstance();
+   logger.info('Test started', { testName: 'loginTest' });
+   ```
+
+3. **Handle Errors Gracefully**
+   ```javascript
+   try {
+     await loginPage.login(user.email, user.password);
+   } catch (error) {
+     logger.error('Login failed', { error: error.message });
+     throw error;
+   }
+   ```
+
+4. **Use Page Object Pattern**
+   ```javascript
+   const pom = new PageObjectManager(page);
+   const loginPage = pom.getLoginPage();
+   await loginPage.login(user.email, user.password);
+   ```
+
+5. **Validate Inputs**
+   ```javascript
+   if (!email || !this._isValidEmail(email)) {
+     throw new Error('Invalid email format');
+   }
+   ```
+
+### 🚀 Performance Guidelines
+
+- Use `isVisible()` instead of `count()` for existence checks
+- Implement caching for frequently accessed objects
+- Make validation optional for performance-critical paths
+- Use retry mechanisms with exponential backoff
+- Minimize DOM queries by caching locators
+
+### 🔒 Security Best Practices
+
+- Never hardcode credentials in source code
+- Validate all URLs to prevent SSRF attacks
+- Use environment variables for sensitive data
+- Implement proper input validation
+- Sanitize user inputs before processing
+
+---
+
+## 🔄 CI/CD Integration
+
+### GitHub Actions
+```yaml
+# .github/workflows/playwright.yml
+name: Playwright Tests
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      
+      - name: Run Playwright tests
+        run: npx playwright test --project=${{ matrix.browser }}
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 30
+```
+
+### Docker Support
+```dockerfile
+FROM mcr.microsoft.com/playwright:v1.40.0-focal
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source code
+COPY . .
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV CI=true
+
+# Run tests
+CMD ["npm", "test"]
+```
+
+---
+
+## 📈 Framework Benefits
+
+✅ **Enterprise Architecture** - SOLID principles and design patterns  
+✅ **Zero Security Vulnerabilities** - Comprehensive security measures  
+✅ **High Performance** - Optimized for speed and efficiency  
+✅ **Maintainable Code** - Clean architecture and separation of concerns  
+✅ **Scalable Design** - Modular, extensible framework structure  
+✅ **Robust Error Handling** - Resilient with retry mechanisms  
+✅ **Comprehensive Logging** - Structured logging and monitoring  
+✅ **CI/CD Ready** - Full automation pipeline support  
+
+---
+
+## 🎓 Advanced Topics
+
+### Custom Assertions
+```javascript
+class CustomAssertions {
+  static async toBeVisibleWithin(locator, timeout = 5000) {
+    await expect(locator).toBeVisible({ timeout });
+  }
+  
+  static async toHaveValidationError(page, fieldName) {
+    const errorLocator = page.locator(`[data-field="${fieldName}"] .error`);
+    await expect(errorLocator).toBeVisible();
+  }
+}
+```
+
+### Test Data Factories
+```javascript
+class UserFactory {
+  static createValidUser() {
+    return {
+      email: `test.${Date.now()}@example.com`,
+      password: 'SecurePass123!',
+      firstName: 'Test',
+      lastName: 'User'
+    };
+  }
+  
+  static createInvalidUser() {
+    return {
+      email: 'invalid-email',
+      password: '123',
+      firstName: '',
+      lastName: ''
+    };
+  }
+}
+```
+
+### API Integration
+```javascript
+class APIHelper {
+  static async createTestUser(userData) {
+    const response = await request.post('/api/users', {
+      data: userData
+    });
+    return response.json();
+  }
+  
+  static async cleanupTestData(userId) {
+    await request.delete(`/api/users/${userId}`);
+  }
+}
+```
+
+---
+
+<div align="center">
+
+**🎭 Enterprise Playwright Framework**
+
+*Built with SOLID Principles • Secure by Design • Performance Optimized*
+
+**Made with ❤️ for Enterprise Test Automation**
+
+</div>check('#newsletter');
 
 // Toggle checkbox
 const isChecked = await page.isChecked('#terms');

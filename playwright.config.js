@@ -6,13 +6,32 @@ import { defineConfig, devices } from '@playwright/test';
  * Uses ConfigManager for centralized configuration
  */
 
-let ConfigManager;
-let browserConfig;
-let reportingConfig;
-let timeouts;
+// Configuration with fallback values
+const config = {
+  browser: {
+    headless: process.env.HEADLESS !== 'false',
+    viewport: { width: 1280, height: 720 }
+  },
+  reporting: {
+    screenshots: true,
+    videos: false,
+    trace: true
+  },
+  timeouts: {
+    navigation: 60000,
+    medium: 15000
+  },
+  retry: {
+    maxAttempts: 3
+  },
+  urls: {
+    base: 'https://rahulshettyacademy.com/client/#/'
+  }
+};
 
+// Try to load ConfigManager with fallback
+let ConfigManager;
 try {
-  // Dynamic import with error handling
   const configModule = await import('./utils/ConfigManager.js');
   ConfigManager = configModule.default;
   
@@ -21,27 +40,9 @@ try {
   if (configErrors.length > 0) {
     console.error('Configuration validation errors:');
     configErrors.forEach(error => console.error(`  - ${error}`));
-    process.exit(1);
   }
-  
-  browserConfig = ConfigManager.getBrowserConfig();
-  reportingConfig = ConfigManager.getReportingConfig();
-  timeouts = ConfigManager.getTimeout('navigation');
-  
 } catch (error) {
   console.warn('ConfigManager not available, using fallback configuration:', error.message);
-  
-  // Fallback configuration
-  browserConfig = {
-    headless: process.env.HEADLESS !== 'false',
-    viewport: { width: 1280, height: 720 }
-  };
-  reportingConfig = {
-    screenshots: true,
-    videos: false,
-    trace: true
-  };
-  timeouts = 60000;
 }
 
 /**
@@ -51,11 +52,11 @@ export default defineConfig({
   testDir: './tests',
   
   /* Global test timeout */
-  timeout: timeouts,
+  timeout: ConfigManager?.getTimeout('navigation') || config.timeouts.navigation,
   
   /* Expect timeout for assertions */
   expect: {
-    timeout: ConfigManager?.getTimeout('medium') || 15000
+    timeout: ConfigManager?.getTimeout('medium') || config.timeouts.medium
   },
   
   /* Run tests in files in parallel */
@@ -65,7 +66,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   
   /* Retry on CI only */
-  retries: process.env.CI ? (ConfigManager?.getRetryConfig().maxAttempts || 3) : 1,
+  retries: process.env.CI ? (ConfigManager?.getRetryConfig()?.maxAttempts || config.retry.maxAttempts) : 1,
   
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
@@ -83,26 +84,26 @@ export default defineConfig({
   /* Global test settings */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: ConfigManager?.getUrl('base') || 'https://rahulshettyacademy.com/client/#/',
+    baseURL: ConfigManager?.getUrl('base') || config.urls.base,
     
     /* Browser options */
-    headless: browserConfig.headless,
-    viewport: browserConfig.viewport,
+    headless: ConfigManager?.getBrowserConfig()?.headless || config.browser.headless,
+    viewport: ConfigManager?.getBrowserConfig()?.viewport || config.browser.viewport,
     
     /* Collect trace when retrying the failed test */
-    trace: reportingConfig.trace ? 'on-first-retry' : 'off',
+    trace: ConfigManager?.getReportingConfig()?.trace ? 'on-first-retry' : 'off',
     
     /* Take screenshot only on failure */
-    screenshot: reportingConfig.screenshots ? 'only-on-failure' : 'off',
+    screenshot: ConfigManager?.getReportingConfig()?.screenshots ? 'only-on-failure' : 'off',
     
     /* Record video on failure */
-    video: reportingConfig.videos ? 'retain-on-failure' : 'off',
+    video: ConfigManager?.getReportingConfig()?.videos ? 'retain-on-failure' : 'off',
     
     /* Action timeout */
-    actionTimeout: ConfigManager?.getTimeout('medium') || 15000,
+    actionTimeout: ConfigManager?.getTimeout('medium') || config.timeouts.medium,
     
     /* Navigation timeout */
-    navigationTimeout: ConfigManager?.getTimeout('navigation') || 60000,
+    navigationTimeout: ConfigManager?.getTimeout('navigation') || config.timeouts.navigation,
     
     /* Ignore HTTPS errors */
     ignoreHTTPSErrors: true,
@@ -118,7 +119,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        headless: browserConfig.headless,
+        headless: ConfigManager?.getBrowserConfig()?.headless || config.browser.headless,
         launchOptions: {
           args: [
             '--start-maximized',
@@ -134,7 +135,7 @@ export default defineConfig({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        headless: browserConfig.headless
+        headless: ConfigManager?.getBrowserConfig()?.headless || config.browser.headless
       },
       dependencies: ['setup']
     },
@@ -142,7 +143,7 @@ export default defineConfig({
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
-        headless: browserConfig.headless
+        headless: ConfigManager?.getBrowserConfig()?.headless || config.browser.headless
       },
       dependencies: ['setup']
     },
@@ -151,7 +152,7 @@ export default defineConfig({
       name: 'Mobile Chrome',
       use: {
         ...devices['Pixel 5'],
-        headless: browserConfig.headless
+        headless: ConfigManager?.getBrowserConfig()?.headless || config.browser.headless
       },
       dependencies: ['setup']
     },
@@ -159,7 +160,7 @@ export default defineConfig({
       name: 'Mobile Safari',
       use: {
         ...devices['iPhone 12'],
-        headless: browserConfig.headless
+        headless: ConfigManager?.getBrowserConfig()?.headless || config.browser.headless
       },
       dependencies: ['setup']
     }

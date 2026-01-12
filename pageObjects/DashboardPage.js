@@ -1,31 +1,18 @@
 import BasePage from './BasePage.js';
 
+/**
+ * Dashboard Page Object
+ */
 export default class DashboardPage extends BasePage {
     constructor(page) {
         super(page);
+        this.selectors = {
+            productCards: '.card-body h5 b',
+            addToCartBtn: '[data-testid="add-to-cart"]'
+        };
     }
 
-    async addProductToCart(productName) {
-        await this.waitForNetworkIdle();
-        await this.page.getByRole('button', { name: ' Add To Cart' }).first().click();
-        await this.dismissAlerts();
+    async getProducts() {
+        return await this.page.locator(this.selectors.productCards).allTextContents();
     }
-
-    async waitForToastDisappear() {
-        // Wait for the toast message to disappear from the page
-        await this.page.waitForSelector('div[role="alert"].toast-message', {
-            state: 'hidden',
-            timeout: 5000
-        });
-    }
-
-    async goToCart() {
-        await this.dismissAlerts();
-        await this.page.locator('button[routerlink="/dashboard/cart"]').click();
-        await this.waitForNetworkIdle();
-    }
-
-    async checkDashboardUrl() {
-    const currentUrl = this.page.url();
-    return currentUrl.includes('dashboard/dash');
-}    }
+}

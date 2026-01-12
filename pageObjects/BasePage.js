@@ -160,7 +160,6 @@ export default class BasePage {
             }
         }
     }
-
     /**
      * Enhanced click with retry mechanism
      * @param {string} selector - Element selector
