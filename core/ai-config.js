@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
+
 // AI Model Configuration
 export const AI_CONFIG = {
   // Model type: 'llama' or 'openai'
